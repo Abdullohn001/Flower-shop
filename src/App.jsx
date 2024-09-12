@@ -10,11 +10,11 @@ import ProtectRoutes from "./Routes/ProtectRoutes";
 import { useAppStore } from "./lib/zustand";
 
 export default function App() {
-  const user = useAppStore((state) => state.admin);
+  const admin = useAppStore((state) => state.admin)
   const routes = createBrowserRouter([
     {
       element: (
-        <ProtectRoutes user={user}>
+        <ProtectRoutes admin={admin}>
           <MainLayout />
         </ProtectRoutes>
       ),
@@ -28,7 +28,7 @@ export default function App() {
     },
     {
       path: "login",
-      element: user ? <Navigate to="/" /> : <Login />,
+      element: admin ? <Navigate to="/" /> : <Login />,
     },
   ]);
   return <RouterProvider router={routes} />;

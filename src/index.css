@@ -93,4 +93,16 @@
   .h4 {
     @apply text-xl font-semibold tracking-tight;
   }
+  .animate-logo{
+    animation: spin 5s linear infinite;
+  }
+
+  @keyframes spin {
+    0%{
+      transform: rotate(0deg);
+    }
+    100%{
+      transform: rotate(360deg);
+    }
+  }
 }
