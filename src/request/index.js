@@ -10,7 +10,7 @@ export const refreshToken = async (token) => {
   });
 
   if (res.status === 200 || res.status === 201) {
-    await res.json();
+    return await res.json();
   } else if (res.status == 403) {
     throw new Error(403);
   } else {

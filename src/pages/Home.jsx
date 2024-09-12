@@ -51,7 +51,7 @@ export default function Home() {
       <div className="base-container">
         <div className="mb-5 flex items-center justify-between border-b py-5">
           <h2 className="h2">Boshqaruv paneli</h2>
-          <Button>
+          <Button onClick={() => setAddItemModal(true)}>
             Qo'shish
             <PlusIcon className="ml-2" />
           </Button>
@@ -69,20 +69,20 @@ export default function Home() {
           </TableHeader>
           <TableBody>
             {flowers &&
-              flowers.map((flower) => {
+              flowers.map(({id, name, category, color, price}) => {
                 return (
-                  <TableRow key={flower.id}>
-                    <TableCell className="font-medium">{flower.id}</TableCell>
-                    <TableCell>{flower.name}</TableCell>
-                    <TableCell>{flower.category}</TableCell>
+                  <TableRow key={id}>
+                    <TableCell className="font-medium">{id}</TableCell>
+                    <TableCell>{name}</TableCell>
+                    <TableCell>{category}</TableCell>
                     <TableCell>
                       <span
-                        style={{ background: flower.color }}
+                        style={{ background: color }}
                         className="block h-4 w-4 rounded-full border"
                       ></span>
                     </TableCell>
                     <TableCell className="text-right">
-                      $ {flower.price}
+                      $ {price}
                     </TableCell>
                   </TableRow>
                 );
