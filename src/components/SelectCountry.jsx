@@ -5,18 +5,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { collectItem } from "../lib/yutils";
+import { useAppStore } from "../lib/zustand";
 
 export default function SelectCategory() {
+  const country = useAppStore((store) => store.flowers);
+
   return (
-    <Select>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Yashash joyini tanlang" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="light">Light</SelectItem>
-        <SelectItem value="dark">Dark</SelectItem>
-        <SelectItem value="system">System</SelectItem>
-      </SelectContent>
-    </Select>
+    country && (
+      <Select>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder="Yashash joyini tanlang" />
+        </SelectTrigger>
+        <SelectContent>
+          {collectItem(country, "country").map((count) => {
+            return (
+              <SelectItem key={count} value={count}>
+                {count}
+              </SelectItem>
+            );
+          })}
+        </SelectContent>
+      </Select>
+    )
   );
 }

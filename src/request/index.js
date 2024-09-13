@@ -54,3 +54,20 @@ export const getFlowers = async (token) => {
     throw new Error("Nimadir hatolik bo'ldi");
   }
 };
+
+export async function uploadImage(image) {
+  const formData = new FormData();
+  formData.append("file", image);
+  const res = await fetch(BASE_URL + "/upload", {
+    method: "POST",
+    body: formData,
+  });
+
+  if (res.status === 200 || res.status === 201) {
+    return res.text();
+  } else if (res.status == 403) {
+    throw new Error(403);
+  } else {
+    throw new Error("Nimadir hatolik bo'ldi");
+  }
+}

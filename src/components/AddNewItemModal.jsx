@@ -13,6 +13,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useAppStore } from "../lib/zustand";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import LifeTime from "./LifeTime";
+import UploadImage from "./UploadImage";
 
 export default function AddNewItemModal() {
   const handleSubmit = (e) => {
@@ -51,7 +53,6 @@ export default function AddNewItemModal() {
             </div>
             <div className="mb-3 flex items-center justify-between">
               <div className="w-[50%]">
-                <Label>Turkumni Tanlang</Label>
                 <SelectCategory />
               </div>
               <div className="w-[50%]">
@@ -63,9 +64,30 @@ export default function AddNewItemModal() {
               <Label>Yashash joyini kiriting</Label>
               <SelectCountry />
             </div>
+             <div>
+              <Label className="ml-2" htmlFor="summary">
+                Gul haqida ma'lumot*
+              </Label>
+              <Textarea
+                placeholder="Gul haqida ma'lumot kiriting..."
+                id="summary"
+              />
+            </div>
+            <div className="mb-3">
+              <Label className="ml-2" htmlFor="smell">
+                Hid*
+              </Label>
+              <Input
+                type="text"
+                id="smell"
+                placeholder="Gul hidini kiriting..."
+              />
+            </div>
             <div>
-              <Label>Gul haqida malumot kiriting</Label>
-              <Textarea />
+              <LifeTime />
+            </div>
+            <div className="w-full">
+              <UploadImage />
             </div>
           </form>
         </DialogHeader>
