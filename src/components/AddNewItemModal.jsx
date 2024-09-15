@@ -15,13 +15,20 @@ import { useAppStore } from "../lib/zustand";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import LifeTime from "./LifeTime";
 import UploadImage from "./UploadImage";
-import { getFormData } from "../lib/yutils";
+import { getFormData, validition } from "../lib/yutils";
+import { toast } from "sonner";
+import { useState } from "react";
 
 export default function AddNewItemModal() {
+  const [letter, setLetter] = useState(0)
   const handleSubmit = (e) => {
     e.preventDefault();
     const result = getFormData(e.target);
-    console.log(result);
+    const { checker, errorMessage } = validition(result);
+
+    if (checker) {
+      toast.warning(errorMessage);
+    }
   };
 
   const addItem = useAppStore((state) => state.addItemModal);
@@ -49,6 +56,8 @@ export default function AddNewItemModal() {
               <div>
                 <Label htmlFor="price">Narxi*</Label>
                 <Input
+                  type="number"
+                  min="0"
                   id="price"
                   placeholder="Gul narxini kiriting"
                   name="price"
@@ -70,15 +79,21 @@ export default function AddNewItemModal() {
               <div>
                 <Label htmlFor="summary">Gul haqida ma'lumot*</Label>
                 <Textarea
-                name="summary"
+                  name="summary"
                   placeholder="Gul haqida ma'lumot kiriting..."
                   id="summary"
+                  maxLength="250"
+                  onChange={(e) => {
+                    let letter = e.target.value.trim();
+                    setLetter(letter.length);
+                  }}
                 />
+                <span className="flex items-center justify-end text-muted-foreground">{letter}/250</span>
               </div>
               <div>
                 <Label htmlFor="smell">Hid*</Label>
                 <Input
-                name="smell"
+                  name="smell"
                   type="text"
                   id="smell"
                   placeholder="Gul hidini kiriting..."
@@ -87,7 +102,7 @@ export default function AddNewItemModal() {
               <LifeTime />
               <UploadImage />
             </div>
-            <div className="flex mt-5 w-full items-center justify-end gap-3">
+            <div className="mt-5 flex w-full items-center justify-end gap-3">
               <Button onClick={addnewItem} type="button" variant="outline">
                 Bekor qilish
               </Button>
