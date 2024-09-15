@@ -15,11 +15,13 @@ import { useAppStore } from "../lib/zustand";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import LifeTime from "./LifeTime";
 import UploadImage from "./UploadImage";
+import { getFormData } from "../lib/yutils";
 
 export default function AddNewItemModal() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const result = getFormData(e.target);
+    console.log(result);
   };
 
   const addItem = useAppStore((state) => state.addItemModal);
@@ -34,60 +36,64 @@ export default function AddNewItemModal() {
             chiqarishingiz mumkin
           </DialogDescription>
 
-          <form className="gap-3 flex flex-col" onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <Label htmlFor="name" className="ml-2">
-                Gul nomi*
-              </Label>
-              <Input id="name" placeholder="Gul nomini kiriting" name="name" />
-            </div>
-            <div className="mb-3">
-              <Label htmlFor="price" className="ml-2">
-                Narxi*
-              </Label>
-              <Input
-                id="price"
-                placeholder="Gul narxini kiriting"
-                name="price"
-              />
-            </div>
-            <div className="mb-3 flex items-center justify-between">
-              <div className="w-[50%]">
-                <SelectCategory />
+          <form className="" onSubmit={handleSubmit}>
+            <div className="flex max-h-96 flex-col gap-3 overflow-y-scroll px-1">
+              <div>
+                <Label htmlFor="name">Gul nomi*</Label>
+                <Input
+                  id="name"
+                  placeholder="Gul nomini kiriting"
+                  name="name"
+                />
               </div>
-              <div className="w-[50%]">
-                <Label>Rangni kiriting</Label>
-                <SelectColor className="w-full" />
+              <div>
+                <Label htmlFor="price">Narxi*</Label>
+                <Input
+                  id="price"
+                  placeholder="Gul narxini kiriting"
+                  name="price"
+                />
               </div>
-            </div>
-            <div>
-              <Label>Yashash joyini kiriting</Label>
-              <SelectCountry />
-            </div>
-             <div>
-              <Label className="ml-2" htmlFor="summary">
-                Gul haqida ma'lumot*
-              </Label>
-              <Textarea
-                placeholder="Gul haqida ma'lumot kiriting..."
-                id="summary"
-              />
-            </div>
-            <div className="mb-3">
-              <Label className="ml-2" htmlFor="smell">
-                Hid*
-              </Label>
-              <Input
-                type="text"
-                id="smell"
-                placeholder="Gul hidini kiriting..."
-              />
-            </div>
-            <div>
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <div className="w-[50%]">
+                  <SelectCategory />
+                </div>
+                <div className="w-[50%]">
+                  <Label>Rangni kiriting</Label>
+                  <SelectColor className="w-full" />
+                </div>
+              </div>
+              <div>
+                <Label>Yashash joyini kiriting</Label>
+                <SelectCountry />
+              </div>
+              <div>
+                <Label htmlFor="summary">Gul haqida ma'lumot*</Label>
+                <Textarea
+                name="summary"
+                  placeholder="Gul haqida ma'lumot kiriting..."
+                  id="summary"
+                />
+              </div>
+              <div>
+                <Label htmlFor="smell">Hid*</Label>
+                <Input
+                name="smell"
+                  type="text"
+                  id="smell"
+                  placeholder="Gul hidini kiriting..."
+                />
+              </div>
               <LifeTime />
-            </div>
-            <div className="w-full">
               <UploadImage />
+            </div>
+            <div className="flex mt-5 w-full items-center justify-end gap-3">
+              <Button onClick={addnewItem} type="button" variant="outline">
+                Bekor qilish
+              </Button>
+              <Button className="w-36" type="submit">
+                Yuklash
+              </Button>
             </div>
           </form>
         </DialogHeader>

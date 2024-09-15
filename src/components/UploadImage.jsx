@@ -6,24 +6,27 @@ import { buttonVariants } from "@/components/ui/button";
 import { PlusCircleIcon, PlusIcon } from "lucide-react";
 import { uploadImage } from "../request";
 import { useRef, useState } from "react";
+import { toast } from "sonner";
 
 export default function UploadImage() {
   const refImg = useRef(null);
-  const [img, setImg] = useState(null);
-  console.log(img)
+  const [img, setImg] = useState("");
 
   function handleGetImage(img, type = "local") {
     if (type === "url") {
       setImg(img);
     } else {
       uploadImage(img)
-        .then((req) => setImg(req))
+        .then((req) => {
+          setImg(req);
+        })
         .catch((error) => console.log(error));
     }
   }
   return (
-    <div className="w-full">
-      <Label className="ml-2">Rasim Yuklang..</Label>
+    <div className="mb-5 w-full">
+      <input type="text" name="imageUrl" onChange={setImg} className="sr-only" value={img}  />
+      <Label>Gul rasmini yuklang</Label>
       <Tabs defaultValue="local" className="w-full">
         <TabsList className="w-full">
           <TabsTrigger className="w-full" value="local">
@@ -31,6 +34,9 @@ export default function UploadImage() {
           </TabsTrigger>
           <TabsTrigger className="w-full" value="url">
             URL
+          </TabsTrigger>
+          <TabsTrigger className="w-full" value="default">
+            Default
           </TabsTrigger>
         </TabsList>
         <TabsContent value="local">
@@ -59,13 +65,39 @@ export default function UploadImage() {
               className="w-full"
               type="url"
             />
-            <Button type="button" onClick={() => handleGetImage(refImg.current.value, "url")}>
+            <Button
+              type="button"
+              onClick={() => handleGetImage(refImg.current.value, "url")}
+            >
               <PlusIcon />
             </Button>
           </div>
         </TabsContent>
+        <TabsContent value="default">
+          <Button
+            type="button"
+            onClick={() =>
+              setImg(
+                "https://cdn-icons-png.flaticon.com/128/10085/10085271.png",
+              )
+            }
+            className="flex w-full items-center gap-2"
+            variant="outline"
+          >
+            Default rasm yuklash <PlusIcon />
+          </Button>
+        </TabsContent>
       </Tabs>
-      {img && <img className="mt-5" height="300px" width="100%" src={img} />}
+      {img && (
+        <img
+          onLoad={() => toast.success("Rasm muvaffaqiyatli yuklandi.")}
+          className="mt-5 !h-[250px] object-cover"
+          width="100%"
+          src={img}
+          name="imgUrl"
+          value={img}
+        />
+      )}
     </div>
   );
 }

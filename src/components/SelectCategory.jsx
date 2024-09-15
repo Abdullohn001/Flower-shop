@@ -21,11 +21,11 @@ export default function SelectCategory() {
   return (
     flowers && (
       <div>
-        <Label onClick={handleFocus} className="ml-2">
+        <Label onClick={handleFocus}>
           Turkumni tanlang
         </Label>
-        <Select open={open} onOpenChange={setOpen}>
-          <SelectTrigger className="w-[180px]">
+        <Select name="category" open={open} onOpenChange={setOpen}>
+          <SelectTrigger className="w-full">
             <SelectValue placeholder="Turkumni tanlang" />
           </SelectTrigger>
           <SelectContent className="max-h-[170px] overflow-y-scroll">

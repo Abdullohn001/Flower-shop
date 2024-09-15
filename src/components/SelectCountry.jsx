@@ -13,7 +13,7 @@ export default function SelectCategory() {
 
   return (
     country && (
-      <Select>
+      <Select name="country">
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Yashash joyini tanlang" />
         </SelectTrigger>

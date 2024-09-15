@@ -14,6 +14,7 @@ import {
 import { PlusIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { Button } from "../components/ui/button";
 import AddNewItemModal from "../components/AddNewItemModal";
+import { dollar } from "../lib/yutils";
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
@@ -48,10 +49,10 @@ export default function Home() {
 
   return (
     <>
-      <div className="base-container">
+      <div className="base-container h-[845px] overflow-y-scroll">
         <div className="mb-5 flex items-center justify-between border-b py-5">
           <h2 className="h2">Boshqaruv paneli</h2>
-          <Button onClick={() => setAddItemModal(true)}>
+          <Button disabled={!flowers} onClick={() => setAddItemModal(true)}>
             Qo'shish
             <PlusIcon className="ml-2" />
           </Button>
@@ -69,7 +70,7 @@ export default function Home() {
           </TableHeader>
           <TableBody>
             {flowers &&
-              flowers.map(({id, name, category, color, price}) => {
+              flowers.map(({ id, name, category, color, price }) => {
                 return (
                   <TableRow key={id}>
                     <TableCell className="font-medium">{id}</TableCell>
@@ -82,7 +83,7 @@ export default function Home() {
                       ></span>
                     </TableCell>
                     <TableCell className="text-right">
-                      $ {price}
+                      {price * dollar},00 so'm
                     </TableCell>
                   </TableRow>
                 );
@@ -90,8 +91,8 @@ export default function Home() {
           </TableBody>
         </Table>
         {loading && (
-          <div className="flex w-full items-center mt-5 justify-center gap-3 font-bold">
-            <UpdateIcon  className="animate-spin"/>
+          <div className="mt-5 flex w-full items-center justify-center gap-3 font-bold">
+            <UpdateIcon className="animate-spin" />
             <h3>Yuklanmoqda...</h3>
           </div>
         )}

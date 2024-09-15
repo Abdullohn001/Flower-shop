@@ -13,8 +13,8 @@ export default function SelectCategory() {
 
   return (
     color && (
-      <Select>
-        <SelectTrigger className="w-[180px]">
+      <Select name="color">
+        <SelectTrigger className="w-full]">
           <SelectValue placeholder="Gul rangini tanlang" />
         </SelectTrigger>
         <SelectContent>
