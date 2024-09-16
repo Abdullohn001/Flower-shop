@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/pagination";
 import { limit } from "../lib/yutils";
 
-export function MyPagination({ setSkip }) {
+export function MyPagination({ setSkip, total, skip }) {
   return (
     <Pagination className="p-5">
       <PaginationContent>
@@ -44,7 +44,11 @@ export function MyPagination({ setSkip }) {
           <PaginationNext
             onClick={(e) => {
               e.preventDefault();
-              setSkip((prev) => (prev += limit));
+              setSkip((prev) => {
+                if (prev + skip > total) {
+                  return prev;
+                } else return (prev += limit);
+              });
             }}
             href="#"
           />

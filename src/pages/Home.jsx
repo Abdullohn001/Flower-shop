@@ -25,13 +25,14 @@ export default function Home() {
   const admin = useAppStore((state) => state.admin);
   const setAdmin = useAppStore((state) => state.setAdmin);
   const setAddItemModal = useAppStore((state) => state.setAddItemModal);
-  console.log(skip);
+  const [total, setTolal] = useState(0);
 
   useEffect(() => {
     setLoading(true);
     getFlowers(admin?.access_token, { skip, limit })
-      .then(({ data }) => {
+      .then(({ data, total }) => {
         setFlowers(data);
+        setTolal(total);
       })
       .catch(({ message }) => {
         if (message === "403") {
@@ -99,7 +100,7 @@ export default function Home() {
             <h3>Yuklanmoqda...</h3>
           </div>
         )}
-        <MyPagination setSkip={setSkip} />
+        <MyPagination setSkip={setSkip} skip={skip} total={total} />
       </div>
       <AddNewItemModal />
     </>
