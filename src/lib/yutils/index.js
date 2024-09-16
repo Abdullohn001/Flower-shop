@@ -42,3 +42,4 @@ export const validition = function (obj) {
 
 export const BASE_URL = "https://json-api.uz/api/project/flowers-app";
 export const limit = 8;
+

@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { MyPagination } from "@/components/MyPagination";
 import AddNewItemModal from "@/components/AddNewItemModal";
 import { limit } from "../lib/yutils";
+import LoaderSkeleton from "@/components/Skeleton";
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
@@ -71,27 +72,31 @@ export default function Home() {
               <TableHead className="text-right">Narxi</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
-            {flowers &&
-              flowers.map(({ id, name, category, color, price }) => {
-                return (
-                  <TableRow key={id}>
-                    <TableCell className="font-medium">{id}</TableCell>
-                    <TableCell>{name}</TableCell>
-                    <TableCell>{category}</TableCell>
-                    <TableCell>
-                      <span
-                        style={{ background: color }}
-                        className="block h-4 w-4 rounded-full border"
-                      ></span>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {price},00 so'm
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
+          {!loading ? (
+            <TableBody>
+              {flowers &&
+                flowers.map(({ id, name, category, color, price }) => {
+                  return (
+                    <TableRow key={id}>
+                      <TableCell className="font-medium">{id}</TableCell>
+                      <TableCell>{name}</TableCell>
+                      <TableCell>{category}</TableCell>
+                      <TableCell>
+                        <span
+                          style={{ background: color }}
+                          className="block h-4 w-4 rounded-full border"
+                        ></span>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {price},00 so'm
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          ) : (
+            <LoaderSkeleton />
+          )}
         </Table>
 
         {loading && (
