@@ -38,8 +38,8 @@ export const login = async (data) => {
   }
 };
 
-export const getFlowers = async (token) => {
-  const res = await fetch(BASE_URL + "/gullar", {
+export const getFlowers = async (token, {limit, skip}) => {
+  const res = await fetch(BASE_URL + `/gullar?skip=${skip}&limit=${limit}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,

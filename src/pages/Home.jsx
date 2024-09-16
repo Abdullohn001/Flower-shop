@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useAppStore } from "../lib/zustand";
-import { getFlowers, refreshToken } from "../request";
+import { useAppStore } from "@/lib/zustand";
+import { getFlowers, refreshToken } from "@/request";
 import { toast } from "sonner";
 import {
   Table,
@@ -10,23 +10,26 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../components/ui/table";
+} from "@/components/ui/table";
 import { PlusIcon, UpdateIcon } from "@radix-ui/react-icons";
-import { Button } from "../components/ui/button";
-import AddNewItemModal from "../components/AddNewItemModal";
-import { dollar } from "../lib/yutils";
+import { Button } from "@/components/ui/button";
+import { MyPagination } from "@/components/MyPagination";
+import AddNewItemModal from "@/components/AddNewItemModal";
+import { limit } from "../lib/yutils";
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
+  const [skip, setSkip] = useState(0);
   const flowers = useAppStore((state) => state.flowers);
   const setFlowers = useAppStore((state) => state.setFlowers);
   const admin = useAppStore((state) => state.admin);
   const setAdmin = useAppStore((state) => state.setAdmin);
   const setAddItemModal = useAppStore((state) => state.setAddItemModal);
+  console.log(skip);
 
   useEffect(() => {
     setLoading(true);
-    getFlowers(admin?.access_token)
+    getFlowers(admin?.access_token, { skip, limit })
       .then(({ data }) => {
         setFlowers(data);
       })
@@ -45,7 +48,7 @@ export default function Home() {
       .finally(() => {
         setLoading(false);
       });
-  }, [admin]);
+  }, [admin, skip]);
 
   return (
     <>
@@ -58,7 +61,6 @@ export default function Home() {
           </Button>
         </div>
         <Table>
-          {flowers && <TableCaption>Gullar haqida ma'lumot.</TableCaption>}
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">Id</TableHead>
@@ -83,21 +85,22 @@ export default function Home() {
                       ></span>
                     </TableCell>
                     <TableCell className="text-right">
-                      {price * dollar},00 so'm
+                      {price},00 so'm
                     </TableCell>
                   </TableRow>
                 );
               })}
           </TableBody>
         </Table>
+
         {loading && (
           <div className="mt-5 flex w-full items-center justify-center gap-3 font-bold">
             <UpdateIcon className="animate-spin" />
             <h3>Yuklanmoqda...</h3>
           </div>
         )}
+        <MyPagination setSkip={setSkip} />
       </div>
-
       <AddNewItemModal />
     </>
   );

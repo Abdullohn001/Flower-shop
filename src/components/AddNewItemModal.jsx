@@ -20,7 +20,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 
 export default function AddNewItemModal() {
-  const [letter, setLetter] = useState(0)
+  const [letter, setLetter] = useState(0);
   const handleSubmit = (e) => {
     e.preventDefault();
     const result = getFormData(e.target);
@@ -82,13 +82,15 @@ export default function AddNewItemModal() {
                   name="summary"
                   placeholder="Gul haqida ma'lumot kiriting..."
                   id="summary"
-                  maxLength="250"
+                  maxLength="200"
                   onChange={(e) => {
-                    let letter = e.target.value.trim();
+                    let letter = e.target.value;
                     setLetter(letter.length);
                   }}
                 />
-                <span className="flex items-center justify-end text-muted-foreground">{letter}/250</span>
+                <span className="flex items-center justify-end text-muted-foreground">
+                  {letter}/250
+                </span>
               </div>
               <div>
                 <Label htmlFor="smell">Hid*</Label>

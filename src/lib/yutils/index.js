@@ -41,4 +41,4 @@ export const validition = function (obj) {
 };
 
 export const BASE_URL = "https://json-api.uz/api/project/flowers-app";
-export const dollar = 12_755;
+export const limit = 8;
