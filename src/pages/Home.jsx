@@ -11,12 +11,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PlusIcon, UpdateIcon } from "@radix-ui/react-icons";
-import { Button } from "@/components/ui/button";
+import {
+  Pencil1Icon,
+  PlusIcon,
+  TrashIcon,
+  UpdateIcon,
+} from "@radix-ui/react-icons";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { MyPagination } from "@/components/MyPagination";
 import AddNewItemModal from "@/components/AddNewItemModal";
 import { limit } from "../lib/yutils";
 import LoaderSkeleton from "@/components/Skeleton";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { deleteFlower } from "../request";
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
@@ -27,6 +39,14 @@ export default function Home() {
   const setAdmin = useAppStore((state) => state.setAdmin);
   const setAddItemModal = useAppStore((state) => state.setAddItemModal);
   const [total, setTolal] = useState(0);
+  const [sendingData, setSendingData] = useState(null);
+
+  function handleDelete(id) {
+    const cheker = confirm("Rosdanha o'chirmoqchimisz ?");
+    if (cheker) {
+      deleteFlower(admin?.access_token, id);
+    }
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -50,7 +70,7 @@ export default function Home() {
       .finally(() => {
         setLoading(false);
       });
-  }, [admin, skip]);
+  }, [admin, skip, sendingData]);
 
   return (
     <>
@@ -70,6 +90,7 @@ export default function Home() {
               <TableHead>Turkumi</TableHead>
               <TableHead>Rangi</TableHead>
               <TableHead className="text-right">Narxi</TableHead>
+              <TableHead className="text-right">Harakatlar</TableHead>
             </TableRow>
           </TableHeader>
           {!loading ? (
@@ -90,6 +111,34 @@ export default function Home() {
                       <TableCell className="text-right">
                         {price},00 so'm
                       </TableCell>
+                      <TableCell className="flex justify-end gap-3">
+                        <TooltipProvider delayDuration="2">
+                          <Tooltip>
+                            <TooltipTrigger
+                              className={`${buttonVariants({ variant: "secondary", size: "icon" })}`}
+                            >
+                              <Pencil1Icon />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Tahrirlash</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+
+                        <TooltipProvider delayDuration="2">
+                          <Tooltip>
+                            <TooltipTrigger
+                              onClick={() => handleDelete(id)}
+                              className={` ${buttonVariants({ variant: "destructive", size: "icon" })}`}
+                            >
+                              <TrashIcon />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>O'chirish</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -107,7 +156,10 @@ export default function Home() {
         )}
         <MyPagination setSkip={setSkip} skip={skip} total={total} />
       </div>
-      <AddNewItemModal />
+      <AddNewItemModal
+        setSendingData={setSendingData}
+        sendingData={sendingData}
+      />
     </>
   );
 }

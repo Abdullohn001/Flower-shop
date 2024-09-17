@@ -40,6 +40,5 @@ export const validition = function (obj) {
   return { checker, errorMessage };
 };
 
-export const BASE_URL = "https://json-api.uz/api/project/flowers-app";
+export const BASE_URL = "https://json-api.uz/api/project/gullar";
 export const limit = 8;
-

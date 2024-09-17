@@ -38,8 +38,9 @@ export const login = async (data) => {
   }
 };
 
-export const getFlowers = async (token, {limit, skip}) => {
+export const getFlowers = async (token, { limit, skip }) => {
   const res = await fetch(BASE_URL + `/gullar?skip=${skip}&limit=${limit}`, {
+    // const res = await fetch(BASE_URL + "/gullar", {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -70,4 +71,36 @@ export async function uploadImage(image) {
   } else {
     throw new Error("Nimadir hatolik bo'ldi");
   }
+}
+
+export async function sendFlower(token, flower) {
+  const res = await fetch(BASE_URL + "/gullar", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(flower),
+  });
+
+  if (res.status === 200 || res.status === 201) {
+    return "Malumotlar muvaffaqiyatli qo'shildi";
+  }
+  if (res.status === 403) throw new Error("403");
+  else throw new Error("Nimadur xato ketdi");
+}
+export async function deleteFlower(token, id) {
+  const res = await fetch(BASE_URL + `/gullar/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (res.status === 200 || res.status === 201) {
+    return "Malumot muvaffaqiyatli o'chirildi";
+  }
+  if (res.status === 403) throw new Error("403");
+  else throw new Error("Nimadur xato ketdi");
 }

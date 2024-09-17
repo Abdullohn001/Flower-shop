@@ -17,22 +17,56 @@ import LifeTime from "./LifeTime";
 import UploadImage from "./UploadImage";
 import { getFormData, validition } from "../lib/yutils";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { refreshToken, sendFlower } from "../request";
+import { UpdateIcon } from "@radix-ui/react-icons";
 
-export default function AddNewItemModal() {
+export default function AddNewItemModal({ sendingData, setSendingData }) {
   const [letter, setLetter] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const setAdmin = useAppStore((state) => state.setAdmin);
+  const admin = useAppStore((state) => state.admin);
+  const addItem = useAppStore((state) => state.addItemModal);
+  const addnewItem = useAppStore((state) => state.setAddItemModal);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const result = getFormData(e.target);
     const { checker, errorMessage } = validition(result);
-
     if (checker) {
       toast.warning(errorMessage);
+    } else {
+      setSendingData(result);
     }
   };
 
-  const addItem = useAppStore((state) => state.addItemModal);
-  const addnewItem = useAppStore((state) => state.setAddItemModal);
+  useEffect(() => {
+    if (sendingData) {
+      setLoading(true);
+      sendFlower(admin?.access_token, sendingData)
+        .then((res) => {
+          toast.dismiss();
+          toast.success(res);
+          setSendingData(null);
+          addnewItem();
+        })
+        .catch(({ message }) => {
+          if (message === "403") {
+            refreshToken(admin?.refresh_token)
+              .then(({ access_token }) => {
+                setAdmin({ ...admin, access_token });
+              })
+              .catch(() => {
+                setAdmin(null);
+                toast.info("Tizimga qayta kirin brat");
+              });
+          }
+          toast.error(message);
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [admin, sendingData]);
+
   return (
     <Dialog open={addItem} onOpenChange={addnewItem}>
       <DialogContent>
@@ -108,8 +142,8 @@ export default function AddNewItemModal() {
               <Button onClick={addnewItem} type="button" variant="outline">
                 Bekor qilish
               </Button>
-              <Button className="w-36" type="submit">
-                Yuklash
+              <Button disabled={loading} className="w-36" type="submit">
+                {loading ? <UpdateIcon className="animate-spin" /> : "Yuklash"}
               </Button>
             </div>
           </form>
