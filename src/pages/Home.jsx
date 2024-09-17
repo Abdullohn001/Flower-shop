@@ -20,7 +20,7 @@ import {
 import { Button, buttonVariants } from "@/components/ui/button";
 import { MyPagination } from "@/components/MyPagination";
 import AddNewItemModal from "@/components/AddNewItemModal";
-import { limit } from "../lib/yutils";
+import { findObj, limit } from "../lib/yutils";
 import LoaderSkeleton from "@/components/Skeleton";
 import {
   Tooltip,
@@ -28,7 +28,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { deleteFlower } from "../request";
+import { deleteFlower, editFlower } from "../request";
+import EditModal from "../components/EditFlower";
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
@@ -38,16 +39,22 @@ export default function Home() {
   const admin = useAppStore((state) => state.admin);
   const setAdmin = useAppStore((state) => state.setAdmin);
   const setAddItemModal = useAppStore((state) => state.setAddItemModal);
+  const setEditModal = useAppStore((state) => state.setEditModal);
   const [total, setTolal] = useState(0);
   const [sendingData, setSendingData] = useState(null);
+  const [data, setData] = useState(null);
+  const [edited, setEdited] = useState(null);
 
+  //Delete
   function handleDelete(id) {
     const cheker = confirm("Rosdanha o'chirmoqchimisz ?");
     if (cheker) {
-      deleteFlower(admin?.access_token, id);
+      deleteFlower(admin?.access_token, id).then((req) =>
+        toast.success(req).catch((res) => toast.info(res)),
+      );
     }
   }
-
+  //Get
   useEffect(() => {
     setLoading(true);
     getFlowers(admin?.access_token, { skip, limit })
@@ -70,8 +77,14 @@ export default function Home() {
       .finally(() => {
         setLoading(false);
       });
-  }, [admin, skip, sendingData]);
+  }, [admin, skip, edited, sendingData]);
 
+  //PATCH
+  function handleEdit(id) {
+    setEditModal(true);
+    const result = findObj(flowers, id);
+    setData(result);
+  }
   return (
     <>
       <div className="base-container h-[845px] overflow-y-scroll">
@@ -115,6 +128,7 @@ export default function Home() {
                         <TooltipProvider delayDuration="2">
                           <Tooltip>
                             <TooltipTrigger
+                              onClick={() => handleEdit(id)}
                               className={`${buttonVariants({ variant: "secondary", size: "icon" })}`}
                             >
                               <Pencil1Icon />
@@ -160,6 +174,7 @@ export default function Home() {
         setSendingData={setSendingData}
         sendingData={sendingData}
       />
+      <EditModal data={data} setEdited={setEdited} edited={edited} />
     </>
   );
 }

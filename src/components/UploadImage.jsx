@@ -8,9 +8,9 @@ import { uploadImage } from "../request";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
-export default function UploadImage() {
+export default function UploadImage({ defaultImg }) {
   const refImg = useRef(null);
-  const [img, setImg] = useState("");
+  const [img, setImg] = useState(defaultImg ? defaultImg : "");
 
   function handleGetImage(img, type = "local") {
     if (type === "url") {
@@ -25,7 +25,13 @@ export default function UploadImage() {
   }
   return (
     <div className="mb-5 w-full">
-      <input type="text" name="imageUrl" onChange={setImg} className="sr-only" value={img}  />
+      <input
+        type="text"
+        name="imageUrl"
+        onChange={setImg}
+        className="sr-only"
+        value={img}
+      />
       <Label>Gul rasmini yuklang</Label>
       <Tabs defaultValue="local" className="w-full">
         <TabsList className="w-full">

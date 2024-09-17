@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 
-export default function SelectCategory() {
+export default function SelectCategory({ category }) {
   const flowers = useAppStore((state) => state.flowers);
   const [open, setOpen] = useState(false);
 
@@ -21,10 +21,13 @@ export default function SelectCategory() {
   return (
     flowers && (
       <div>
-        <Label onClick={handleFocus}>
-          Turkumni tanlang
-        </Label>
-        <Select name="category" open={open} onOpenChange={setOpen}>
+        <Label onClick={handleFocus}>Turkumni tanlang</Label>
+        <Select
+          defaultValue={category && category}
+          name="category"
+          open={open}
+          onOpenChange={setOpen}
+        >
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Turkumni tanlang" />
           </SelectTrigger>

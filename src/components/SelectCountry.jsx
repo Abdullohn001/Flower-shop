@@ -8,12 +8,12 @@ import {
 import { collectItem } from "../lib/yutils";
 import { useAppStore } from "../lib/zustand";
 
-export default function SelectCategory() {
+export default function SelectCategory({ cauntry }) {
   const country = useAppStore((store) => store.flowers);
 
   return (
     country && (
-      <Select name="country">
+      <Select defaultValue={cauntry && cauntry} name="country">
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Yashash joyini tanlang" />
         </SelectTrigger>

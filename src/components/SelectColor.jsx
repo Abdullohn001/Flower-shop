@@ -8,12 +8,12 @@ import {
 import { collectItem } from "../lib/yutils";
 import { useAppStore } from "../lib/zustand";
 
-export default function SelectCategory() {
+export default function SelectCategory({ defaultColor }) {
   const color = useAppStore((store) => store.flowers);
 
   return (
     color && (
-      <Select name="color">
+      <Select defaultValue={defaultColor && defaultColor} name="color">
         <SelectTrigger className="w-full]">
           <SelectValue placeholder="Gul rangini tanlang" />
         </SelectTrigger>
@@ -24,7 +24,7 @@ export default function SelectCategory() {
                 <div className="flex items-center gap-2">
                   <span
                     style={{ background: count }}
-                    className="h-4 border border-black w-4 block rounded-full"
+                    className="block h-4 w-4 rounded-full border border-black"
                   ></span>
                   <h1> {count}</h1>
                 </div>

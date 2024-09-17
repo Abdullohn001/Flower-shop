@@ -40,5 +40,9 @@ export const validition = function (obj) {
   return { checker, errorMessage };
 };
 
-export const BASE_URL = "https://json-api.uz/api/project/gullar";
+export function findObj(array, id) {
+  return array.find((element) => element.id === id);
+}
+
+export const BASE_URL = "https://json-api.uz/api/project/flowers";
 export const limit = 8;
